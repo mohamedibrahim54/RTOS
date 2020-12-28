@@ -1,0 +1,15 @@
+hi, this Assignment is really tricky.
+the communication Task must send data every 200 ms and at the end of the execution of the task, the counter will be more than 200 ms, so it's priority will always be 4.
+but what actual happen in your code is the following:
+1- in vTaskDelay(100); at communication Task the scheduler resume the execution of Matrix Task.
+2- in case the matrix Task reach vTaskDelay(100); , the priorityset task will run and change priority to 2 because counter will less than 200.
+3- then when the delay at communication Task end, communication Task will run until the delay at Matrix Task end then the matrix task run until reach vTaskDelay(100);, the communication Task will run until reach vTaskDelay(100);
+4- when the scheduler wait until the end of the delay in communication Task and Matrix Task it will run priorityset task and change priority to 4 because counter will be larger than 1000.
+this explain the output:
+Communication task priority is: 4; Sending data...; Data sent!
+Communication task priority is: 2; Sending data...;Period of matrixtask is: 1048(ms)
+ Data sent!
+Communication task priority is: 4; Sending data...;Period of matrixtask is: 1040(ms)
+ Data sent!
+
+thanks
